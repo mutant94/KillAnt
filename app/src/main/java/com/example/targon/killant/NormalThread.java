@@ -38,7 +38,7 @@ public class NormalThread extends Thread{
                 if(canvas!=null){
                     try {
                         surfaceHolder.unlockCanvasAndPost(canvas);
-                    }catch (Exception e){}
+                    }catch (Exception e){e.printStackTrace();}
                 }
             }
             timeMillis=(System.nanoTime()-startTime)/1000000;
@@ -49,8 +49,11 @@ public class NormalThread extends Thread{
             totalTime +=System.nanoTime()+startTime;
             frameCount++;
             if(frameCount==FPS){
+                double averangeFPS=1000/((totalTime/frameCount)/1000000);
                 frameCount=0;
                 totalTime=0;
+
+                System.out.println(averangeFPS);
             }
 
         }

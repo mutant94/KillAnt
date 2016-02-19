@@ -13,13 +13,15 @@ public class Point extends GameObject {
         this.y=y;
         r=10;
     }
-    public void update(){}
+    public void update(){
+
+    }
     public void draw(Canvas canvas){
         Paint paint=new Paint();
         paint.setColor(0xFF000000);
         paint.setStyle(Paint.Style.FILL);
 
-        canvas.drawCircle(x-r, y-r, r, paint);
+        canvas.drawCircle(x, y, r, paint);
     }
 
 }

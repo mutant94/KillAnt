@@ -24,7 +24,8 @@ public class NormalPanel extends SurfaceView implements SurfaceHolder.Callback {
     Random r= new Random();
     //object
     Point point;
-    ArrayList<Ant> ants;
+    Background background;
+    static ArrayList<Ant> ants;
     //timeant
 
     //boolean for game
@@ -32,8 +33,9 @@ public class NormalPanel extends SurfaceView implements SurfaceHolder.Callback {
     public NormalPanel(Context context){
         super(context);
         getHolder().addCallback(this);
+        thread=new NormalThread(getHolder(), this);
         setFocusable(true);
-        setBackgroundColor(0xFFFFFFFF);
+
 
         //get w and h
         WindowManager wm=(WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
@@ -44,13 +46,17 @@ public class NormalPanel extends SurfaceView implements SurfaceHolder.Callback {
         WIDTH=size.y;
         System.out.println("WYSOKOSC: "+HEIGHT);
         System.out.println("SZEROKOSC: " + WIDTH);
+
     }
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         //create all object
         point=new Point((int)(HEIGHT/2), (int)(WIDTH/2));
+        ants=new ArrayList<Ant>();
+        background=new Background(HEIGHT, WIDTH);
+        //ants.add(0, new Ant((int)(HEIGHT/2)-50, (int)(WIDTH/2), BitmapFactory.decodeResource(getResources(), R.drawable.mrowka), 20, 49, score, 1, WIDTH, HEIGHT));
         //start game loop
-        thread=new NormalThread(getHolder(), this);
+
         thread.setRunning(true);
         thread.start();
     }
@@ -73,30 +79,45 @@ public class NormalPanel extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
     public void update(){
-        point.update();
-        score++;
-        if(score%30==0){
-            int rand=r.nextInt()%4;
-            int randx;
-            int randy;
-            randx=r.nextInt()%HEIGHT;
-            randy=r.nextInt()%WIDTH;
-            switch (rand){
+
+
+        System.out.println(score);
+
+        if(score%50==0) {
+            int rand = r.nextInt() % 4;
+            int randx = -1;
+            int randy = -1;
+            while (randx < 0 || randy < 0) {
+                randx = r.nextInt() % HEIGHT;
+                randy = r.nextInt() % WIDTH;
+            }
+            System.out.println("X: " + randx + " Y: " + randy);
+            System.out.println("create ant!!!!");
+            switch (rand) {
                 case 0:
-                    randx=-randx;
-                    randy=-randy;
+                    //randy=0;
                     break;
                 case 1:
-                    randx=-randx;
+                    //randx=0;
                     break;
                 case 2:
-                    randy=-randy;
+                    //randy=WIDTH;
                     break;
                 case 3:
+                    //randx=HEIGHT;
                     break;
             }
-            ants.add(ants.size(), new Ant(randx, randy, BitmapFactory.decodeResource(getResources(), R.drawable.mrowka), 20, 50, score, 2, WIDTH, HEIGHT));
+            ants.add(ants.size(), new Ant(randx, randy, BitmapFactory.decodeResource(getResources(), R.drawable.mrowka), 20, 49, score, 2, WIDTH, HEIGHT));
+            System.out.println("size: " + ants.size());
         }
+
+        score++;
+        //update object
+        point.update();
+        for(Ant a:ants){
+            a.update();
+        }
+
     }
     @Override
     public void draw(Canvas canvas){
@@ -104,13 +125,16 @@ public class NormalPanel extends SurfaceView implements SurfaceHolder.Callback {
         //final float scaleFactoryX=getWidth()/(WIDTH*1.f);
         //final float scaleFactoryY=getHeight()/(HEIGHT*1.f);
         if(canvas!=null){
-            final int savedState=canvas.save();
+            int savedState=canvas.save();
             //scale
             //canvas.scale(scaleFactoryX, scaleFactoryY);
             //object
+            background.draw(canvas);
             point.draw(canvas);
-            System.out.println("WYSOKOSC: "+HEIGHT);
-            System.out.println("SZEROKOSC: " + WIDTH);
+
+            for(Ant a:ants){
+                a.draw(canvas);
+            }
 
 
             //restore

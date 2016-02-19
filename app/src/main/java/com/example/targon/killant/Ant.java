@@ -2,6 +2,7 @@ package com.example.targon.killant;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 
 import java.util.Random;
 
@@ -12,7 +13,7 @@ public class Ant extends GameObject{
     private int speed;
     private int score;
     Random r=new Random();
-    private Animation animation=new Animation();
+    private final static Animation animation=new Animation();
     private Bitmap spritesheet;
     private int WIDTH;
     private int HEIGHT;
@@ -35,6 +36,22 @@ public class Ant extends GameObject{
         animation.setDelay(100-speed);
         int centW=WIDTH/2;
         int centH=HEIGHT/2;
+
+
+        degress=(float)Math.toDegrees(Math.atan2(y-centH, x-centW));
+        while(degress<0){
+            degress+=360;
+        }
+        //degress*=2;
+        System.out.println("!!!!!!!!!!!!!!!!!!! \n" +
+                " KAT: "+degress+"\n x: "+this.x+" y:"+this.y);
+
+
+    }
+    public void update(){
+        /**
+        int centW=WIDTH/2;
+        int centH=HEIGHT/2;
         int numcw=0;
         if(y>centW){
             numcw=1;
@@ -43,21 +60,18 @@ public class Ant extends GameObject{
         }
         if(x<centH){
             numcw+=2;
-        }
-        degress=(float)Math.toDegrees(Math.atan2(0, 0));
-        if(degress<0){
-            degress+=360;
-        }
-    }
-    public void update(){
-        int centW=WIDTH/2;
-        int centH=HEIGHT/2;
+        }*/
+
 
     }
     public void draw(Canvas canvas){
         try{
-            canvas.drawBitmap(animation.getImage(), x, y, null);
-            canvas.rotate(degress);
+            Matrix m=new Matrix();
+            m.postRotate(360-degress);
+            Bitmap b=Bitmap.createBitmap(animation.getImage(), 0, 0, animation.getImage().getWidth(), animation.getImage().getHeight(), m, true);
+
+            canvas.drawBitmap(b, x, y, null);
+
         }catch (Exception e){}
     }
     public double lenght(int x, int y){
