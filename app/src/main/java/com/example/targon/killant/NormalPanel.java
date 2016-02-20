@@ -81,32 +81,37 @@ public class NormalPanel extends SurfaceView implements SurfaceHolder.Callback {
     public void update(){
 
 
-        System.out.println(score);
+        System.out.println("punkty: "+score);
 
-        if(score%50==0) {
+        if(score%5==0) {
             int rand = r.nextInt() % 4;
             int randx = -1;
             int randy = -1;
-            while (randx < 0 || randy < 0) {
+            while (randx < 0 || randy < 0 ) {
                 randx = r.nextInt() % HEIGHT;
                 randy = r.nextInt() % WIDTH;
+
+            }
+            while (rand>3 || rand < 0){
+                rand = r.nextInt() % 4;
+            }
+            switch (rand) {
+                case 0:
+                    randy=0;
+                    break;
+                case 1:
+                    randx=0;
+                    break;
+                case 2:
+                    randy=WIDTH;
+                    break;
+                case 3:
+                    randx=HEIGHT;
+                    break;
             }
             System.out.println("X: " + randx + " Y: " + randy);
             System.out.println("create ant!!!!");
-            switch (rand) {
-                case 0:
-                    //randy=0;
-                    break;
-                case 1:
-                    //randx=0;
-                    break;
-                case 2:
-                    //randy=WIDTH;
-                    break;
-                case 3:
-                    //randx=HEIGHT;
-                    break;
-            }
+
             ants.add(ants.size(), new Ant(randx, randy, BitmapFactory.decodeResource(getResources(), R.drawable.mrowka), 20, 49, score, 2, WIDTH, HEIGHT));
             System.out.println("size: " + ants.size());
         }

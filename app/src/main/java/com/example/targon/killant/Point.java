@@ -11,7 +11,7 @@ public class Point extends GameObject {
     public Point(int x, int y){
         this.x=x;
         this.y=y;
-        r=10;
+        r=20;
     }
     public void update(){
 

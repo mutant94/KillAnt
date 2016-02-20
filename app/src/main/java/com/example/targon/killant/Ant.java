@@ -18,13 +18,14 @@ public class Ant extends GameObject{
     private int WIDTH;
     private int HEIGHT;
     private float degress;
+    private boolean lose;
     public Ant(int x, int y, Bitmap res, int w, int h, int s, int numFrames, int viewW, int viewH){
         this.x=x;
         this.y=y;
         width=w;
         height=h;
         score=s;
-        speed=30+(int)(score/10.1);
+        speed=10+(int)(score/10.1);
         WIDTH=viewW;
         HEIGHT=viewH;
         Bitmap[] image = new Bitmap[numFrames];
@@ -38,20 +39,36 @@ public class Ant extends GameObject{
         int centH=HEIGHT/2;
 
 
-        degress=(float)Math.toDegrees(Math.atan2(y-centH, x-centW));
+        degress=(float)Math.toDegrees(Math.atan2(y-centW, x-centH));
+
+        degress-=90;
         while(degress<0){
             degress+=360;
         }
-        //degress*=2;
+        lose=false;
+
+        System.out.println("!!!!!!!!!!!!!!!!!!! \n" +
+                " KAT: "+degress+"\n x: "+this.x+" y:"+this.y);
+        System.out.println("!!!!!!!!!!!!!!!!!!! \n" +
+                " KAT: "+degress+"\n x: "+this.x+" y:"+this.y);
+        System.out.println("!!!!!!!!!!!!!!!!!!! \n" +
+                " KAT: "+degress+"\n x: "+this.x+" y:"+this.y);
+        System.out.println("!!!!!!!!!!!!!!!!!!! \n" +
+                " KAT: "+degress+"\n x: "+this.x+" y:"+this.y);
         System.out.println("!!!!!!!!!!!!!!!!!!! \n" +
                 " KAT: "+degress+"\n x: "+this.x+" y:"+this.y);
 
-
     }
     public void update(){
-        /**
         int centW=WIDTH/2;
         int centH=HEIGHT/2;
+        degress=(float)Math.toDegrees(Math.atan2(y-centW, x-centH));
+
+        degress-=90;
+        while(degress<0){
+            degress+=360;
+        }
+
         int numcw=0;
         if(y>centW){
             numcw=1;
@@ -60,14 +77,20 @@ public class Ant extends GameObject{
         }
         if(x<centH){
             numcw+=2;
-        }*/
+        }
+        int lenght=(int)lenght(this.x, this.y);
+        if(lenght-15<=speed){
+
+        }else {
+
+        }
 
 
     }
     public void draw(Canvas canvas){
         try{
             Matrix m=new Matrix();
-            m.postRotate(360-degress);
+            m.postRotate(degress);
             Bitmap b=Bitmap.createBitmap(animation.getImage(), 0, 0, animation.getImage().getWidth(), animation.getImage().getHeight(), m, true);
 
             canvas.drawBitmap(b, x, y, null);
@@ -76,5 +99,8 @@ public class Ant extends GameObject{
     }
     public double lenght(int x, int y){
         return Math.sqrt( Math.pow(x- HEIGHT/2, 2)+ Math.pow(y-WIDTH/2, 2) );
+    }
+    public boolean getLose(){
+        return lose;
     }
 }
