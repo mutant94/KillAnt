@@ -21,7 +21,7 @@ public class Point extends GameObject {
         paint.setColor(0xFF000000);
         paint.setStyle(Paint.Style.FILL);
 
-        canvas.drawCircle(x, y, r, paint);
+        canvas.drawCircle(x+r, y+r, r, paint);
     }
 
 }

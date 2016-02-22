@@ -46,6 +46,6 @@ public abstract class GameObject {
     }
 
     public Rect getRectangle(){
-        return new Rect(x, y, x+width, y+height);
+        return new Rect(x-5, y-5, x+50, y+50);
     }
 }

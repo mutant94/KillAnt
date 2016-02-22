@@ -19,13 +19,13 @@ public class Ant extends GameObject{
     private int HEIGHT;
     private float degress;
     private boolean lose;
-    public Ant(int x, int y, Bitmap res, int w, int h, int s, int numFrames, int viewW, int viewH){
+    public Ant(int x, int y, Bitmap res, int s, int numFrames, int viewW, int viewH){
         this.x=x;
         this.y=y;
-        width=w;
-        height=h;
+        width=res.getWidth();
+        height=res.getHeight()/2-1;
         score=s;
-        speed=10+(int)(score/10.1);
+        speed=5+(int)(score/100.1);
         WIDTH=viewW;
         HEIGHT=viewH;
         Bitmap[] image = new Bitmap[numFrames];
@@ -47,16 +47,8 @@ public class Ant extends GameObject{
         }
         lose=false;
 
-        System.out.println("!!!!!!!!!!!!!!!!!!! \n" +
-                " KAT: "+degress+"\n x: "+this.x+" y:"+this.y);
-        System.out.println("!!!!!!!!!!!!!!!!!!! \n" +
-                " KAT: "+degress+"\n x: "+this.x+" y:"+this.y);
-        System.out.println("!!!!!!!!!!!!!!!!!!! \n" +
-                " KAT: "+degress+"\n x: "+this.x+" y:"+this.y);
-        System.out.println("!!!!!!!!!!!!!!!!!!! \n" +
-                " KAT: "+degress+"\n x: "+this.x+" y:"+this.y);
-        System.out.println("!!!!!!!!!!!!!!!!!!! \n" +
-                " KAT: "+degress+"\n x: "+this.x+" y:"+this.y);
+
+
 
     }
     public void update(){
@@ -69,7 +61,7 @@ public class Ant extends GameObject{
             degress+=360;
         }
 
-        int numcw=0;
+        int numcw;
         if(y>centW){
             numcw=1;
         }else {
@@ -78,13 +70,111 @@ public class Ant extends GameObject{
         if(x<centH){
             numcw+=2;
         }
-        int lenght=(int)lenght(this.x, this.y);
-        if(lenght-15<=speed){
 
-        }else {
+        int length=(int)lenght(this.x, this.y);
+        int sx=0;
+        int sy=0;
+        if(length<=speed+15 && !lose){
+
+            switch (numcw){
+                case 1:
+                    sx=(int)(Math.sin(360-degress)*length);
+                    sy=(int)(Math.sin(degress-270)*length);
+                    sx=Math.abs(sx);
+                    sy=Math.abs(sy);
+
+                    x-=sx;
+                    y-=sy;
+                    break;
+                case 2:
+                    sx=(int)(Math.sin(degress-180)*length);
+                    sy=(int)(Math.sin(270-degress)*length);
+                    sx=Math.abs(sx);
+                    sy=Math.abs(sy);
+
+                    x-=sx;
+                    y+=sy;
+                    break;
+                case 3:
+                    sx=(int)(Math.sin(degress)*length);
+                    sy=(int)(Math.sin(90-degress)*length);
+                    sx=Math.abs(sx);
+                    sy=Math.abs(sy);
+
+                    x+=sx;
+                    y-=sy;
+                    break;
+                case 4:
+                    sx=(int)(Math.sin(180-degress)*length);
+                    sy=(int)(Math.sin(degress-90)*length);
+                    sx=Math.abs(sx);
+                    sy=Math.abs(sy);
+
+                    x+=sx;
+                    y+=sy;
+                    break;
+            }
+            //sx=(int)(Math.sin(270 + degress)*length);
+            //sy=(int)(Math.cos(degress + 270)*length);
+            //sx=Math.abs(sx);
+            //sy=Math.abs(sy);
+            lose = true;
+        }else if(!lose){
+
+            switch (numcw){
+                case 1:
+                    sx=(int)(Math.sin(360-degress)*speed);
+                    sy=(int)(Math.sin(degress-270)*speed);
+                    sx=Math.abs(sx);
+                    sy=Math.abs(sy);
+                    if(sx+sy<speed/2){
+                        sx=3;
+                        sy=3;
+                    }
+                    x-=sx;
+                    y-=sy;
+                    break;
+                case 2:
+                    sx=(int)(Math.sin(degress-180)*speed);
+                    sy=(int)(Math.sin(270-degress)*speed);
+                    sx=Math.abs(sx);
+                    sy=Math.abs(sy);
+                    if(sx+sy<speed/2){
+                        sx=3;
+                        sy=3;
+                    }
+                    x-=sx;
+                    y+=sy;
+                    break;
+                case 3:
+                    sx=(int)(Math.sin(degress)*speed);
+                    sy=(int)(Math.sin(90-degress)*speed);
+                    sx=Math.abs(sx);
+                    sy=Math.abs(sy);
+                    if(sx+sy<speed/2){
+                        sx=3;
+                        sy=3;
+                    }
+                    x+=sx;
+                    y-=sy;
+                    break;
+                case 4:
+                    sx=(int)(Math.sin(180-degress)*speed);
+                    sy=(int)(Math.sin(degress-90)*speed);
+                    sx=Math.abs(sx);
+                    sy=Math.abs(sy);
+                    if(sx+sy<speed/2){
+                        sx=3;
+                        sy=3;
+                    }
+                    x+=sx;
+                    y+=sy;
+                    break;
+            }
 
         }
-
+        //System.out.println("!!!!!!!!!!!!!!!!!!! \n KAT: "+degress+"\n x: "+this.x+" y:"+this.y + "\n numercw: "+ numcw +"\n length: "+length+"\n speed: "+speed+ "\n sx i sy: "+sx+" "+sy+"\n lose:"+lose);
+        animation.update();
 
     }
     public void draw(Canvas canvas){
